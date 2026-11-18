@@ -1,0 +1,26 @@
+# دادهٔ واقعی کسب‌وکار هرگز نباید وارد مخزن شود.
+# نسخهٔ خصوصی هویت و دفتر، اگر روزی کنار کد عمومی قرار گرفتند، نادیده گرفته شوند.
+build/brand.txt
+build/seed.txt
+build/brand.private.txt
+build/seed.private.txt
+dist/
+*.private.*
+
+# پشتیبان‌های واقعی دفتر — ممکن است اطلاعات مشتری داشته باشند.
+*.ledger.json
+*-backup.json
+backup-*.json
+
+# خروجی‌های موقت و فایل‌های سیستم‌عامل
+node_modules/
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ویرایشگر
+.vscode/
+.idea/
+*.swp

@@ -1,0 +1,473 @@
+<a class="skip" href="#tbl">رفتن به جدول صورت‌حساب</a>
+<div id="app">
+<header class="top">
+  <div class="brand">
+    <div class="logo" aria-hidden="true" id="brandLogo">ص</div>
+    <div class="brand-txt">
+      <h1 id="brandName">صورت‌حساب</h1>
+      <div class="sub" id="brandSub"></div>
+    </div>
+  </div>
+  <div class="hero-act">
+    <span class="dchip" id="brandMeta"></span>
+    <span class="savechip" id="saveChip" title="وضعیت ذخیره‌سازی در این مرورگر"><span class="dot"></span><span id="saveTxt">ذخیره شد</span></span>
+    <label class="unit-field" title="فقط نمایشی است؛ مبالغ ذخیره‌شده همیشه به ریال هستند">واحد
+      <select id="unit" aria-label="واحد نمایش مبالغ"><option value="ریال">ریال</option><option value="تومان">تومان</option></select></label>
+    <label class="unit-field" title="دفترهای جداگانه برای هر مشتری">دفتر
+      <select id="book" aria-label="انتخاب دفتر صورت‌حساب"></select></label>
+    <button type="button" class="iconbtn" id="bNewBook" title="دفتر جدید" aria-label="ساخت دفتر جدید">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 012-2h9l5 5v13a2 2 0 01-2 2H6a2 2 0 01-2-2z"/><path d="M14 3v5h5M12 11v6M9 14h6"/></svg></button>
+    <button type="button" class="iconbtn" id="bBooks" title="مدیریت دفترها" aria-label="مدیریت دفترها">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5A1.5 1.5 0 015.5 4H9v16H5.5A1.5 1.5 0 014 18.5z"/><path d="M9 4h5.5A1.5 1.5 0 0116 5.5v13a1.5 1.5 0 01-1.5 1.5H9"/><path d="M18 7l2.4.6-2.6 12.2-2.4-.5"/></svg></button>
+    <button type="button" class="iconbtn" id="bTheme" title="حالت روشن / تاریک" aria-label="تغییر حالت روشن و تاریک">
+      <svg id="icTheme" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+    <button type="button" class="iconbtn" id="bKeys" title="کلیدهای میان‌بر" aria-label="راهنمای کلیدهای میان‌بر">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2.5"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8"/></svg></button>
+  </div>
+</header>
+
+<main>
+  <section class="summary" aria-label="خلاصه حساب">
+    <div class="stat dr"><span class="label">جمع بدهکار</span><div class="amx" id="xDr"></div><span class="hint" id="hDr"></span></div>
+    <div class="stat cr"><span class="label">جمع بستانکار</span><div class="amx" id="xCr"></div><span class="hint" id="hCr"></span></div>
+    <div class="stat main"><span class="label">مانده نهایی کل حساب</span><div class="amx" id="xBal"></div><span class="side-note" id="tSide"></span></div>
+    <div class="stat cnt"><span class="label">ردیف‌های دفتر</span><span class="val" id="tN">0</span><span class="hint" id="hN"></span>
+      <svg class="spark" id="sparkBal" viewBox="0 0 200 34" preserveAspectRatio="none" aria-hidden="true"></svg></div>
+  </section>
+
+  <section class="bar" aria-label="ابزارها">
+    <div class="group">
+      <label class="field">جست‌وجو
+        <span class="searchwrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+          <input type="search" id="q" placeholder="کلمه، عدد یا تاریخ — شبیه‌ترین‌ها هم می‌آیند" autocomplete="off">
+        </span>
+        <small class="hint">شرح، مبلغ یا تاریخ را بنویسید. <span class="kbd">Ctrl</span> + <span class="kbd">K</span> برای پرش به این کادر.</small>
+      </label>
+      <label class="field">نمایش
+        <select id="flt">
+          <option value="all">همه ردیف‌ها</option>
+          <option value="dr">ردیف‌های بدهکار</option>
+          <option value="cr">ردیف‌های بستانکار</option>
+          <option value="deb">مانده بدهکار</option>
+          <option value="cre">مانده بستانکار</option>
+          <option value="flag">ردیف‌های دارای هشدار</option>
+        </select><small class="hint">«ردیف» یعنی خودِ سند؛ «مانده» یعنی وضعیت حساب پس از آن سند.</small>
+      </label>
+    </div>
+    <div class="group">
+      <button class="primary" id="bAdd" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>ردیف جدید</button>
+      <button id="bUndo" type="button" disabled title="بازگردانی آخرین تغییر (Ctrl+Z)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h11a5 5 0 010 10H8"/><path d="M7 4L3 8l4 4"/></svg>بازگردانی</button>
+      <button id="bRedo" type="button" disabled title="انجام دوباره (Ctrl+Y)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8H10a5 5 0 000 10h6"/><path d="M17 4l4 4-4 4"/></svg>انجام دوباره</button>
+      <details class="menu" id="mFile">
+        <summary>فایل و داده</summary>
+        <div class="menu-list">
+          <span class="mlab">ورود</span>
+          <button type="button" id="bImp">ورود از فایل اکسل / CSV</button>
+          <button type="button" id="bRes">بازیابی از فایل پشتیبان</button>
+          <hr>
+          <span class="mlab">خروجی</span>
+          <button type="button" id="bXls">اکسل — کل حساب</button>
+          <button type="button" id="bXlsF">اکسل — ردیف‌های فیلترشده</button>
+          <button type="button" id="bXlsS">اکسل — ردیف‌های انتخاب‌شده</button>
+          <button type="button" id="bCsv">CSV — ردیف‌های نمایش‌داده‌شده</button>
+          <button type="button" id="bBak">دانلود پشتیبان کامل (JSON)</button>
+          <hr>
+          <span class="mlab">ابزار</span>
+          <button type="button" id="bSort">مرتب‌سازی دائمی بر اساس تاریخ</button>
+          <button type="button" id="bDedup">یافتن ردیف‌های تکراری</button>
+          <button type="button" id="bLog">تاریخچه تغییرات</button>
+        </div>
+      </details>
+      <label class="field">کاغذ<select id="ori"><option value="landscape">A4 افقی</option><option value="portrait">A4 عمودی</option></select></label>
+      <button type="button" id="bPS" aria-haspopup="dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2.2" fill="currentColor" stroke="none"/><circle cx="15" cy="12" r="2.2" fill="currentColor" stroke="none"/><circle cx="8" cy="18" r="2.2" fill="currentColor" stroke="none"/></svg>ظاهر و چاپ</button>
+      <button type="button" id="bPvw">پیش‌نمایش چاپ</button>
+      <button type="button" id="bPrn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6M6 18H4a2 2 0 01-2-2v-4a2 2 0 012-2h16a2 2 0 012 2v4a2 2 0 01-2 2h-2"/><path d="M6 14h12v7H6z"/></svg>چاپ A4</button>
+    </div>
+  </section>
+
+  <input type="file" id="fx" accept=".xlsx,.xls,.csv" hidden>
+  <input type="file" id="fj" accept=".json,application/json" hidden>
+
+  <nav class="tabs" role="tablist" aria-label="بخش‌های صورت‌حساب">
+    <button type="button" role="tab" id="tabLedger" aria-selected="true" aria-controls="pnlLedger">دفتر حساب</button>
+    <button type="button" role="tab" id="tabAnalytics" aria-selected="false" aria-controls="pnlAnalytics">تحلیل و نمودار</button>
+    <button type="button" role="tab" id="tabCheques" aria-selected="false" aria-controls="pnlCheques">دفتر چک<span class="badge" id="chqBadge" hidden>0</span></button>
+  </nav>
+
+  <!-- ================= LEDGER ================= -->
+  <section class="tabpanel" id="pnlLedger" role="tabpanel" aria-labelledby="tabLedger">
+    <div class="views" id="views"></div>
+
+    <section class="xp" id="xp" aria-label="فیلتر دقیق و ترکیبی">
+      <details id="xfd">
+        <summary>
+          <span class="xi"><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16l-6 8v6l-4-2v-4L4 5z"/></svg></span>
+          <span class="xt"><b>فیلتر دقیق و ترکیبی</b><small>تاریخ، مبلغ، نوع عملیات و ترتیب نتایج</small></span>
+          <span class="xb" id="xf-badge" hidden>0</span>
+          <span class="xc"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></span>
+        </summary>
+        <div class="xg">
+          <div class="xcard">
+            <div class="xch"><span class="xi sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg></span>
+              <div><h3>بازه تاریخ</h3><p class="xh">فقط ردیف‌هایی که تاریخشان در این بازه است.</p></div></div>
+            <div class="xfl"><span class="xl" id="l-d1">از تاریخ</span><input id="xf-d1" placeholder="1405-01-01" autocomplete="off" aria-labelledby="l-d1"><span class="xh">شامل همین روز. «مانده اول دوره» از ردیف‌های پیش از این تاریخ محاسبه می‌شود.</span></div>
+            <div class="xfl"><span class="xl" id="l-d2">تا تاریخ</span><input id="xf-d2" placeholder="1405-12-29" autocomplete="off" aria-labelledby="l-d2"><span class="xh">شامل همین روز. خالی = تا آخرین ردیف.</span></div>
+          </div>
+          <div class="xcard">
+            <div class="xch"><span class="xi sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="6" width="18" height="12" rx="3"/><circle cx="12" cy="12" r="2.5"/></svg></span>
+              <div><h3>بازه مبلغ</h3><p class="xh">مبلغ هر ردیف با این حدود مقایسه می‌شود.</p></div></div>
+            <div><label class="xl" for="xf-a1">حداقل مبلغ</label><div class="xin"><input id="xf-a1" inputmode="decimal" placeholder="مثلاً 5,000,000" autocomplete="off"><span class="xu">ریال</span></div><span class="xh">کم‌مبلغ‌تر از این نمایش داده نمی‌شود.</span></div>
+            <div><label class="xl" for="xf-a2">حداکثر مبلغ</label><div class="xin"><input id="xf-a2" inputmode="decimal" placeholder="مثلاً 50,000,000" autocomplete="off"><span class="xu">ریال</span></div><span class="xh">واحد همان «واحد نمایش» بالای صفحه است.</span></div>
+          </div>
+          <div class="xcard">
+            <div class="xch"><span class="xi sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12V4h8l10 10-8 8L3 12z"/><circle cx="7.5" cy="8.5" r="1"/></svg></span>
+              <div><h3>نوع عملیات</h3><p class="xh">از روی کلمه‌های شرح ردیف تشخیص داده می‌شود.</p></div></div>
+            <div id="xf-op-chips" class="xchips" role="radiogroup" aria-label="نوع عملیات"></div>
+            <select id="xf-op" class="sr" aria-hidden="true" tabindex="-1"><option value="">همه</option><option>فروش</option><option>خرید</option><option>دریافت</option><option>پرداخت</option><option>چک</option><option>اصلاحیه</option></select>
+          </div>
+          <div class="xcard">
+            <div class="xch"><span class="xi sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4v16M7 20l-3-3M7 20l3-3M17 20V4M17 4l-3 3M17 4l3 3"/></svg></span>
+              <div><h3>ترتیب و دقت جست‌وجو</h3><p class="xh">چیدمان نتایج و سخت‌گیری جست‌وجوی عددی.</p></div></div>
+            <div><span class="xl">ترتیب نتایج</span><div id="xf-ord-seg" class="xseg" role="radiogroup" aria-label="ترتیب نتایج"></div>
+              <select id="xf-ord" class="sr" aria-hidden="true" tabindex="-1"><option value="reg">ترتیب دفتر</option><option value="sim">شباهت</option><option value="date">تاریخ</option><option value="amt">مبلغ</option></select>
+              <span class="xh">«ترتیب دفتر» همان ترتیب ثبت است و با کشیدن دستگیره ردیف قابل تغییر است. با انتخاب «تاریخ» یا «مبلغ»، ستون مانده هم بر همان اساس بازمحاسبه می‌شود.</span></div>
+            <label class="xsw"><input type="checkbox" id="xf-ex" role="switch"><span class="trk" aria-hidden="true"></span><span class="xsl"><b>فقط عدد دقیقاً برابر</b><span class="xh">عدد را در کادر جست‌وجو بنویسید؛ فقط ردیفی می‌آید که مبلغ، قیمت، مقدار یا مانده‌اش دقیقاً همان عدد باشد.</span></span></label>
+          </div>
+        </div>
+        <div class="xfoot">
+          <span class="xcnt" id="xf-count" aria-live="polite"></span>
+          <span class="group">
+            <button type="button" id="bSaveView">ذخیره این نما</button>
+            <button type="button" id="xf-clr">پاک‌کردن همه فیلترها</button>
+          </span>
+        </div>
+      </details>
+      <div class="xtags" id="xf-tags" aria-label="فیلترهای فعال"></div>
+    </section>
+
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+    <div id="fsum" aria-live="polite"></div>
+
+    <div class="tablewrap" id="tbl" tabindex="0">
+      <table>
+        <caption>گردش حساب <span class="capnote">برای دیدن جزئیات هر سند روی شرح آن کلیک کنید · دستگیره ⠿ را بکشید تا ترتیب دفتر عوض شود</span></caption>
+        <colgroup id="cg"></colgroup>
+        <thead id="thd"></thead>
+        <tbody id="tb"></tbody>
+        <tfoot id="tf"></tfoot>
+      </table>
+    </div>
+    <div id="selbar" hidden aria-live="polite"></div>
+  </section>
+
+  <!-- ================= ANALYTICS ================= -->
+  <section class="tabpanel" id="pnlAnalytics" role="tabpanel" aria-labelledby="tabAnalytics" hidden>
+    <div class="kpis" id="anKpis"></div>
+    <div class="cards">
+      <div class="panel wide">
+        <h3><span class="xi sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></span>گردش ماهانه بدهکار و بستانکار</h3>
+        <p class="phint">جمع مبالغ هر ماه شمسی. ارتفاع ستون‌ها نسبی است؛ عدد دقیق روی هر ستون نوشته شده (به میلیون ریال).</p>
+        <div id="chMonthly"></div>
+        <div class="legend"><span><i style="background:var(--s1)"></i>بدهکار</span><span><i style="background:var(--s4)"></i>بستانکار</span><span><i style="background:var(--s2)"></i>خالص ماه</span></div>
+      </div>
+      <div class="panel wide">
+        <h3><span class="xi sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l5-6 4 3 5-8 4 5"/><path d="M3 21h18"/></svg></span>روند مانده حساب</h3>
+        <p class="phint">مانده تجمعی پس از هر سند، به ترتیب دفتر. بالای خط صفر = بدهکار، پایین = بستانکار.</p>
+        <div id="chBalance"></div>
+      </div>
+      <div class="panel">
+        <h3><span class="xi sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5"/></svg></span>سهم کالاها از گردش</h3>
+        <p class="phint">هشت کالای پرتکرار بر پایه مجموع مبلغ ردیف‌ها.</p>
+        <div id="chGoods"></div>
+      </div>
+      <div class="panel">
+        <h3><span class="xi sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18M9 9v11"/></svg></span>جدول کالاها</h3>
+        <p class="phint">مقدار خرید و فروش، میانگین قیمت و ارزش هر کالا. فقط ردیف‌های دارای مقدار.</p>
+        <div class="miniwrap"><table class="mini"><thead><tr><th>کالا</th><th class="n">خرید (kg)</th><th class="n">فروش (kg)</th><th class="n">میانگین قیمت</th><th class="n">ارزش کل</th></tr></thead><tbody id="goodsBody"></tbody></table></div>
+      </div>
+      <div class="panel wide">
+        <h3><span class="xi sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20a6 6 0 0112 0"/><path d="M17 11h4M17 15h4M17 7h4"/></svg></span>طرف‌حساب‌های پرتکرار</h3>
+        <p class="phint">نام‌هایی که داخل پرانتز شرح ردیف‌ها آمده‌اند، به‌ترتیب مجموع مبلغ.</p>
+        <div class="miniwrap"><table class="mini"><thead><tr><th>طرف حساب</th><th class="n">تعداد سند</th><th class="n">بدهکار</th><th class="n">بستانکار</th><th class="n">خالص</th></tr></thead><tbody id="partyBody"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CHEQUES ================= -->
+  <section class="tabpanel" id="pnlCheques" role="tabpanel" aria-labelledby="tabCheques" hidden>
+    <div class="kpis" id="chqKpis"></div>
+    <div class="bar">
+      <div class="group">
+        <label class="field">وضعیت چک<select id="chqStatus">
+          <option value="all">همه چک‌ها</option><option value="open">در جریان ( وصول نشده )</option>
+          <option value="returned">عودت / برگشتی</option><option value="spent">خرج شده</option><option value="due">سررسید گذشته یا نزدیک</option>
+        </select></label>
+        <label class="field">جست‌وجوی چک<span class="searchwrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.6-3.6"/></svg>
+          <input type="search" id="chqQ" placeholder="شماره چک، بانک یا شعبه" autocomplete="off"></span></label>
+      </div>
+      <div class="group"><button type="button" id="chqCsv">خروجی CSV دفتر چک</button></div>
+    </div>
+    <div class="panel wide">
+      <h3><span class="xi sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2.5"/><path d="M2 10h20M6 15h4"/></svg></span>دفتر چک‌های استخراج‌شده از شرح اسناد</h3>
+      <p class="phint">شماره چک، بانک، شعبه و سررسید به‌صورت خودکار از متن شرح خوانده می‌شود و «عودت به مشتری» و «خرج چک» به چک اصلی پیوند می‌خورد. برای دیدن سند اصلی روی شماره چک کلیک کنید.</p>
+      <div class="miniwrap" style="max-height:none"><table class="mini"><thead><tr>
+        <th>شماره چک</th><th>بانک / شعبه</th><th class="n">مبلغ</th><th>دریافت</th><th>سررسید</th><th>وضعیت</th><th>سند مرتبط</th>
+      </tr></thead><tbody id="chqBody"></tbody></table></div>
+    </div>
+  </section>
+
+  <section class="sfoot" id="sfoot" hidden aria-label="اطلاعات تماس و پاورقی"></section>
+</main>
+</div>
+
+<div id="pa" aria-hidden="true"></div>
+
+<div class="toast" id="toast" role="status">
+  <span class="tmsg" id="tm"></span>
+  <button type="button" id="tUndo">بازگردانی <span class="cd" id="cd">15</span></button>
+  <button type="button" class="tx" id="tClose" aria-label="بستن پیام">✕</button>
+</div>
+
+<!-- ================= DETAIL DRAWER ================= -->
+<div id="dwScrim"></div>
+<aside id="drawer" hidden aria-labelledby="dwT" aria-modal="false">
+  <div class="dwh">
+    <h2 id="dwT">جزئیات سند</h2>
+    <div class="nav">
+      <button type="button" id="dwPrev" aria-label="سند قبلی"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg></button>
+      <button type="button" id="dwNext" aria-label="سند بعدی"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></button>
+      <button type="button" id="dwClose" aria-label="بستن جزئیات"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+  </div>
+  <div class="dwb" id="dwBody"></div>
+  <div class="dwf">
+    <button type="button" class="primary" id="dwEdit">ویرایش سند</button>
+    <button type="button" id="dwCopy">کپی</button>
+    <button type="button" id="dwUp" title="یک ردیف بالاتر">↑ بالاتر</button>
+    <button type="button" id="dwDown" title="یک ردیف پایین‌تر">↓ پایین‌تر</button>
+    <span class="grow" style="flex:1"></span>
+    <button type="button" class="danger" id="dwDel">حذف</button>
+  </div>
+</aside>
+
+<!-- ================= ADD / EDIT ================= -->
+<dialog id="dlg" aria-labelledby="dlgT">
+  <div class="dlg-head"><div style="flex:1"><h2 id="dlgT">ردیف جدید</h2><div class="dsub">مبلغ‌ها همیشه به <b>ریال</b> ذخیره می‌شوند؛ واحد نمایش فقط ظاهر را عوض می‌کند.</div></div></div>
+  <div class="errsum" id="errsum" role="alert" tabindex="-1" hidden><h3>لطفاً موارد زیر را اصلاح کنید:</h3><ul id="errList"></ul></div>
+  <form id="frm" novalidate>
+    <div class="form">
+      <label class="field">تاریخ عملیات *
+        <input name="d" id="f-d" placeholder="مثلاً 1405-01-16" autocomplete="off">
+        <span class="err" id="e-d" hidden></span>
+      </label>
+      <label class="field">واحد
+        <input name="u" list="units" id="f-u" autocomplete="off">
+        <datalist id="units"><option value="کیلو گرم"><option value="عدد"><option value="درآمد"><option value="تن"><option value="بسته"></datalist>
+      </label>
+      <label class="field full">شرح *
+        <textarea name="s" id="f-s" rows="3" placeholder="مثلاً: قهوه - فاکتور خرید(1860) - تسویه ۲۰ روزه"></textarea>
+        <span class="err" id="e-s" hidden></span>
+      </label>
+      <label class="field">مقدار
+        <input name="q" id="f-q" inputmode="decimal" autocomplete="off" style="direction:ltr;text-align:right">
+        <span class="err" id="e-q" hidden></span>
+      </label>
+      <label class="field">قیمت واحد (ریال)
+        <input name="p" id="f-p" inputmode="decimal" autocomplete="off" style="direction:ltr;text-align:right">
+        <span class="err" id="e-p" hidden></span><div class="amx" id="f-pmx"></div>
+      </label>
+      <label class="field">نوع مبلغ
+        <select name="side" id="f-side"><option value="dr">بدهکار</option><option value="cr">بستانکار</option></select>
+      </label>
+      <label class="field">مبلغ (ریال) *
+        <input name="amt" id="f-amt" inputmode="decimal" autocomplete="off" style="direction:ltr;text-align:right">
+        <span class="err" id="e-amt" hidden></span><div class="amx" id="f-amx"></div>
+      </label>
+      <label class="field full">عنوان ارز و کشور (فقط توضیحی؛ نرخ تبدیل ندارد)
+        <input name="c" id="f-c" autocomplete="off">
+      </label>
+      <label class="field full">یادداشت داخلی (در چاپ نمی‌آید)
+        <textarea name="note" id="f-note" rows="2" placeholder="مثلاً: منتظر تأیید وزن کیسه‌ها"></textarea>
+      </label>
+      <div class="full" style="display:flex;flex-wrap:wrap;gap:14px;align-items:center">
+        <label class="chk"><input type="checkbox" id="f-auto" checked> محاسبه خودکار مبلغ از مقدار × قیمت</label>
+        <span class="hint" style="max-width:none">با خاموش‌کردن این گزینه، مبلغ را دستی وارد می‌کنید و تغییر نمی‌کند.</span>
+      </div>
+    </div>
+    <div class="dlg-foot">
+      <button class="primary" type="submit">ذخیره سند</button>
+      <button type="button" id="bSaveNew" title="ذخیره و بلافاصله فرم بعدی">ذخیره و سند بعدی</button>
+      <span class="grow"></span>
+      <button type="button" id="bCancel">انصراف</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ================= BULK EDIT ================= -->
+<dialog id="bulk" aria-labelledby="bulkT">
+  <div class="dlg-head"><div style="flex:1"><h2 id="bulkT">ویرایش گروهی</h2><div class="dsub" id="bulkSub"></div></div></div>
+  <form id="bulkFrm">
+    <div class="form">
+      <label class="field full">عملیات
+        <select id="bk-op">
+          <option value="date">تاریخ همه را یکسان کن</option>
+          <option value="side">نوع مبلغ همه را یکسان کن</option>
+          <option value="unit">واحد همه را یکسان کن</option>
+          <option value="prefix">به ابتدای شرح اضافه کن</option>
+          <option value="suffix">به انتهای شرح اضافه کن</option>
+          <option value="replace">در شرح جایگزین کن</option>
+          <option value="scale">مبلغ‌ها را در ضریب ضرب کن</option>
+          <option value="cur">عنوان ارز و کشور را یکسان کن</option>
+        </select>
+      </label>
+      <label class="field full" id="bk-v1w"><span id="bk-v1l">مقدار جدید</span><input id="bk-v1" autocomplete="off"></label>
+      <label class="field full" id="bk-v2w" hidden>جایگزین شود با<input id="bk-v2" autocomplete="off"></label>
+      <div class="full muted" id="bk-hint"></div>
+    </div>
+    <div class="dlg-foot">
+      <button class="primary" type="submit">اعمال روی انتخاب‌شده‌ها</button>
+      <span class="grow"></span>
+      <button type="button" id="bkCancel">انصراف</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ================= REPORT ================= -->
+<dialog id="rep" aria-labelledby="repT">
+  <div class="dlg-head"><h2 id="repT"></h2></div>
+  <p class="muted" id="repM"></p>
+  <div class="rl"><table><thead><tr><th style="width:64px">ردیف</th><th style="width:80px">نوع</th><th>توضیح</th></tr></thead><tbody id="repB"></tbody></table></div>
+  <form method="dialog" class="dlg-foot" id="repF"></form>
+</dialog>
+
+<!-- ================= CONFIRM ================= -->
+<dialog id="cfm" aria-labelledby="cfmT" aria-describedby="cfmM">
+  <div class="cfm">
+    <h2 id="cfmT"></h2><p id="cfmM"></p>
+    <form method="dialog">
+      <button value="ok" class="danger" id="cfmOk"></button>
+      <button value="cancel" id="cfmNo">انصراف</button>
+    </form>
+  </div>
+</dialog>
+
+<!-- ================= BOOKS ================= -->
+<dialog id="bks" aria-labelledby="bksT">
+  <div class="dlg-head"><div style="flex:1"><h2 id="bksT">دفترهای صورت‌حساب</h2>
+    <div class="dsub">هر دفتر ردیف‌ها، تنظیمات چاپ و تاریخچهٔ جدا دارد. حذف دفتر برگشت‌پذیر نیست؛ پیش از حذف، پشتیبان بگیرید.</div></div></div>
+  <div class="rl"><table><thead><tr><th>نام دفتر</th><th style="width:86px">ردیف</th><th style="width:210px">عملیات</th></tr></thead><tbody id="bksB"></tbody></table></div>
+  <form method="dialog" class="dlg-foot"><button type="button" id="bksNew" class="primary">ساخت دفتر جدید</button><span class="grow"></span><button value="close">بستن</button></form>
+</dialog>
+
+<!-- ================= TEXT PROMPT ================= -->
+<dialog id="prm" aria-labelledby="prmT" aria-describedby="prmM">
+  <div class="cfm">
+    <h2 id="prmT"></h2><p id="prmM"></p>
+    <form method="dialog" id="prmF">
+      <label class="prml" for="prmV" id="prmL">نام</label>
+      <input id="prmV" type="text" autocomplete="off" maxlength="80">
+      <p class="prmerr" id="prmE" hidden>نام نمی‌تواند خالی باشد.</p>
+      <div class="prmb">
+        <button value="ok" class="primary" id="prmOk">ذخیره</button>
+        <button value="cancel" type="button" id="prmNo">انصراف</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<!-- ================= SHORTCUTS ================= -->
+<dialog id="keys" aria-labelledby="keysT">
+  <div class="dlg-head"><h2 id="keysT">کلیدهای میان‌بر</h2></div>
+  <div class="keylist">
+    <div class="keyrow"><span>رفتن به کادر جست‌وجو</span><span><span class="kbd">Ctrl</span> <span class="kbd">K</span> یا <span class="kbd">/</span></span></div>
+    <div class="keyrow"><span>سند جدید</span><span><span class="kbd">Ctrl</span> <span class="kbd">N</span></span></div>
+    <div class="keyrow"><span>بازگردانی آخرین عملیات</span><span><span class="kbd">Ctrl</span> <span class="kbd">Z</span></span></div>
+    <div class="keyrow"><span>انجام دوبارهٔ عملیات بازگردانی‌شده</span><span><span class="kbd">Ctrl</span> <span class="kbd">Y</span> یا <span class="kbd">Ctrl</span> <span class="kbd">Shift</span> <span class="kbd">Z</span></span></div>
+    <div class="keyrow"><span>دانلود پشتیبان</span><span><span class="kbd">Ctrl</span> <span class="kbd">S</span></span></div>
+    <div class="keyrow"><span>چاپ</span><span><span class="kbd">Ctrl</span> <span class="kbd">P</span></span></div>
+    <div class="keyrow"><span>حذف ردیف‌های انتخاب‌شده</span><span><span class="kbd">Delete</span></span></div>
+    <div class="keyrow"><span>انتخاب همه ردیف‌های نمایش‌داده‌شده</span><span><span class="kbd">Ctrl</span> <span class="kbd">A</span></span></div>
+    <div class="keyrow"><span>سند قبلی / بعدی در پنجره جزئیات</span><span><span class="kbd">↑</span> <span class="kbd">↓</span></span></div>
+    <div class="keyrow"><span>بستن پنجره‌ها و پنل جزئیات</span><span><span class="kbd">Esc</span></span></div>
+    <div class="keyrow"><span>همین راهنما</span><span><span class="kbd">?</span></span></div>
+  </div>
+  <form method="dialog" class="dlg-foot"><span class="grow"></span><button class="primary" value="x">متوجه شدم</button></form>
+</dialog>
+
+<!-- ================= PRINT PREVIEW ================= -->
+<dialog id="pvw" aria-labelledby="pvwT">
+  <div class="pvhead">
+    <h2 id="pvwT">پیش‌نمایش چاپ</h2>
+    <span class="muted" id="pvInfo"></span>
+    <button type="button" class="primary" id="pvPrint">چاپ همین</button>
+    <button type="button" id="pvClose">بستن</button>
+  </div>
+  <div id="pvbody"><div id="pvpage"></div></div>
+</dialog>
+
+<!-- ================= LIVE SETTINGS ================= -->
+<dialog id="pdlg" aria-labelledby="pdlgT">
+  <div class="pdh" id="pdh">
+    <h2 id="pdlgT">ظاهر و چاپ</h2>
+    <span class="live">تغییرات همان لحظه اعمال می‌شود · با کشیدن این نوار جابه‌جا کنید</span>
+    <button type="button" id="pClose" aria-label="بستن پنجره تنظیمات">✕</button>
+  </div>
+  <div class="pbody">
+    <fieldset class="pfs"><legend>حال‌وهوای صفحه</legend>
+      <div class="prow"><span class="xl" style="margin:0">حالت نمایش</span>
+        <div class="segmini" id="p-theme" style="flex:1"><button type="button" data-v="light">روشن</button><button type="button" data-v="dark">تاریک</button></div></div>
+      <div class="prow"><span class="xl" style="margin:0">تراکم ردیف‌ها</span>
+        <div class="segmini" id="p-density" style="flex:1"><button type="button" data-v="cozy">راحت</button><button type="button" data-v="compact">فشرده</button></div></div>
+      <div class="prow"><label class="chk"><input type="checkbox" id="p-anim"> انیمیشن و حرکت پس‌زمینه</label></div>
+    </fieldset>
+    <fieldset class="pfs"><legend>سربرگ</legend>
+      <div class="prow"><label class="field pg">نام کسب‌وکار<input id="p-name"></label><label class="chk"><input type="checkbox" id="p-showName"> نمایش</label></div>
+      <div class="prow"><label class="field pg">عنوان فرعی<input id="p-sub"></label><label class="chk"><input type="checkbox" id="p-showSub"> نمایش</label></div>
+      <div class="prow"><label class="field pg">تاریخ (خالی = امروز)<input id="p-date" placeholder="مثلاً ۱۷ تیر ۱۴۰۵"></label><label class="chk"><input type="checkbox" id="p-showDate"> نمایش</label></div>
+      <div class="prow"><label class="chk"><input type="checkbox" id="p-showUnit"> نمایش واحد پول</label></div>
+      <label class="field">مانده اول دوره (ریال؛ مثبت = بدهکار، منفی = بستانکار)
+        <input id="p-open" inputmode="decimal" style="direction:ltr;text-align:right" placeholder="0">
+        <span class="hint">این مبلغ پیش از اولین ردیف به حساب اضافه می‌شود و در همه مانده‌ها، چاپ و خروجی اکسل لحاظ می‌گردد.</span></label>
+    </fieldset>
+    <fieldset class="pfs"><legend>پاورقی و اطلاعات تماس</legend>
+      <div class="prow"><label class="chk"><input type="checkbox" id="p-showMain"> نمایش متن اصلی پاورقی</label></div>
+      <label class="field">متن اصلی پاورقی<textarea id="p-main" rows="5"></textarea></label>
+      <div class="prow"><label class="chk"><input type="checkbox" id="p-showItems"> نمایش اطلاعات پاورقی</label></div>
+      <div id="p-items" style="display:flex;flex-direction:column;gap:7px"></div>
+      <div><button type="button" id="p-addItem" class="tiny">+ افزودن بخش جدید</button></div>
+    </fieldset>
+    <fieldset class="pfs"><legend>نمایش مبالغ (ریال · تومان · عددی · متنی)</legend>
+      <div id="p-am" style="display:flex;flex-direction:column;gap:9px"></div>
+    </fieldset>
+    <fieldset class="pfs"><legend>کنترل‌های صحت اطلاعات مالی</legend>
+      <div id="p-ck" style="display:flex;flex-direction:column;gap:1px"></div>
+      <div><button type="button" id="p-runck" class="tiny">اجرای کنترل روی کل دفتر</button></div>
+    </fieldset>
+    <fieldset class="pfs"><legend>ظاهر جدول و چاپ</legend>
+      <div class="prow">
+        <label class="field">رنگ تم چاپ<input type="color" id="p-color"></label>
+        <label class="field">اندازه فونت چاپ (۵ تا ۱۶؛ خالی = خودکار)<input id="p-fs" inputmode="decimal" placeholder="خودکار"></label>
+      </div>
+      <div class="swatches" id="p-swatches"></div>
+      <span id="p-fserr" hidden>اندازه فونت باید عددی بین ۵ تا ۱۶ باشد؛ تا اصلاح، حالت خودکار اعمال می‌شود.</span>
+      <div class="prow">
+        <label class="chk"><input type="checkbox" id="p-zebra"> ردیف‌های یک‌درمیان رنگی</label>
+        <label class="chk"><input type="checkbox" id="p-showTotals"> ردیف جمع کل</label>
+      </div>
+      <div class="muted">ستون‌های نمایش (صفحه و چاپ):</div>
+      <div id="p-cols" class="pcols"></div>
+    </fieldset>
+  </div>
+  <div class="dlg-foot">
+    <button type="button" id="pReset">بازنشانی به پیش‌فرض</button>
+    <span class="grow"></span>
+    <button type="button" class="primary" id="pClose2">بستن</button>
+  </div>
+</dialog>
